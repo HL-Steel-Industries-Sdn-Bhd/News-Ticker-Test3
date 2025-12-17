@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>News Ticker Demo</title>
+<title>News Ticker Demo - Slowest</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -38,16 +38,16 @@
 </head>
 <body>
 
-<h2>News Ticker Demo</h2>
+<h2>News Ticker Demo - Adjustable Speed</h2>
 
 <div>
-  <label for="speedRange">Ticker Speed:</label>
+  <label for="speedRange">Ticker Speed (px/frame):</label>
   <input type="range" id="speedRange" min="0.1" max="10" value="0.1" step="0.1">
-  <span id="speedValue">5</span>
+  <span id="speedValue">0.1</span>
 </div>
 
 <div id="tickerWrapper">
-  <span id="ticker">🚀 Breaking News: ChatGPT can now control ticker speed in real-time! 🔥 Stay tuned for updates! 🌟</span>
+  <span id="ticker">🚀 Breaking News: Now you can control ticker speed from 0.1 to 10 px/frame! 🌟</span>
 </div>
 
 <script>
@@ -56,12 +56,11 @@ const wrapper = document.getElementById('tickerWrapper');
 const speedRange = document.getElementById('speedRange');
 const speedValue = document.getElementById('speedValue');
 
-let pos = wrapper.offsetWidth; // 起始位置在容器右侧
-let speed = parseInt(speedRange.value);
+let pos = wrapper.offsetWidth; // 初始位置
+let speed = parseFloat(speedRange.value); // 每帧移动像素数
 
-// 动画函数
 function moveTicker() {
-  pos -= speed; // 每帧移动像素
+  pos -= speed;
   if(pos < -ticker.offsetWidth) pos = wrapper.offsetWidth;
   ticker.style.transform = `translateX(${pos}px)`;
   requestAnimationFrame(moveTicker);
@@ -70,10 +69,10 @@ function moveTicker() {
 // 启动动画
 requestAnimationFrame(moveTicker);
 
-// 动态调速
+// 实时调速
 speedRange.addEventListener('input', () => {
-  speed = parseInt(speedRange.value);
-  speedValue.textContent = speed;
+  speed = parseFloat(speedRange.value);
+  speedValue.textContent = speed.toFixed(1);
 });
 </script>
 
