@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>News Ticker Demo - Custom Speed</title>
+<title>News Ticker Demo - 0 to 10</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -38,16 +38,16 @@
 </head>
 <body>
 
-<h2>News Ticker Demo - Custom Speed Mapping</h2>
+<h2>News Ticker Demo - Slider 0 to 10</h2>
 
 <div>
-  <label for="speedRange">Ticker Speed (1-10):</label>
-  <input type="range" id="speedRange" min="1" max="10" value="1" step="1">
-  <span id="speedValue">1</span>
+  <label for="speedRange">Ticker Speed (0-10):</label>
+  <input type="range" id="speedRange" min="0" max="10" value="5" step="1">
+  <span id="speedValue">5</span>
 </div>
 
 <div id="tickerWrapper">
-  <span id="ticker">🚀 Breaking News: Speed 1-10 maps to 0.2-2 px/frame smoothly! 🌟</span>
+  <span id="ticker">🚀 Breaking News: Slider 0-10 maps to 0.2-2 px/frame! Initial is 5. 🌟</span>
 </div>
 
 <script>
@@ -58,16 +58,16 @@ const speedValue = document.getElementById('speedValue');
 
 let pos = wrapper.offsetWidth;
 
-// 将滑块值 1-10 映射到实际速度 0.2-2 px/frame
+// 映射函数：滑块 0-10 → 实际速度 0.2-2 px/frame
 function mapSpeed(sliderValue) {
-  const minPx = 0.2;
-  const maxPx = 2;
-  const minSlider = 1;
+  const minPx = 0.2; // 最慢
+  const maxPx = 2;   // 最快
+  const minSlider = 0;
   const maxSlider = 10;
-  // 线性映射
   return minPx + ((sliderValue - minSlider) / (maxSlider - minSlider)) * (maxPx - minPx);
 }
 
+// 初始速度
 let speed = mapSpeed(parseInt(speedRange.value));
 
 function moveTicker() {
@@ -79,6 +79,7 @@ function moveTicker() {
 
 requestAnimationFrame(moveTicker);
 
+// 滑块调速
 speedRange.addEventListener('input', () => {
   const sliderVal = parseInt(speedRange.value);
   speed = mapSpeed(sliderVal);
