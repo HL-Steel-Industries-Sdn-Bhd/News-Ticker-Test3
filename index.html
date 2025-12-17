@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>News Ticker Demo - Slowest</title>
+<title>News Ticker Demo - Custom Speed</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -38,16 +38,16 @@
 </head>
 <body>
 
-<h2>News Ticker Demo - Adjustable Speed</h2>
+<h2>News Ticker Demo - Custom Speed Mapping</h2>
 
 <div>
-  <label for="speedRange">Ticker Speed (px/frame):</label>
-  <input type="range" id="speedRange" min="0.1" max="5" value="0.1" step="0.1">
-  <span id="speedValue">0.1</span>
+  <label for="speedRange">Ticker Speed (1-10):</label>
+  <input type="range" id="speedRange" min="1" max="10" value="1" step="1">
+  <span id="speedValue">1</span>
 </div>
 
 <div id="tickerWrapper">
-  <span id="ticker">🚀 Breaking News: 若不是你突然闯进我生活，我怎会把死守的寂寞放任了，爱我的事你都说，爱我的事你不做，我却把甜言蜜语，当做你爱我的躯壳 🌟</span>
+  <span id="ticker">🚀 Breaking News: Speed 1-10 maps to 0.2-2 px/frame smoothly! 🌟</span>
 </div>
 
 <script>
@@ -56,8 +56,19 @@ const wrapper = document.getElementById('tickerWrapper');
 const speedRange = document.getElementById('speedRange');
 const speedValue = document.getElementById('speedValue');
 
-let pos = wrapper.offsetWidth; // 初始位置
-let speed = parseFloat(speedRange.value); // 每帧移动像素数
+let pos = wrapper.offsetWidth;
+
+// 将滑块值 1-10 映射到实际速度 0.2-2 px/frame
+function mapSpeed(sliderValue) {
+  const minPx = 0.2;
+  const maxPx = 2;
+  const minSlider = 1;
+  const maxSlider = 10;
+  // 线性映射
+  return minPx + ((sliderValue - minSlider) / (maxSlider - minSlider)) * (maxPx - minPx);
+}
+
+let speed = mapSpeed(parseInt(speedRange.value));
 
 function moveTicker() {
   pos -= speed;
@@ -66,13 +77,12 @@ function moveTicker() {
   requestAnimationFrame(moveTicker);
 }
 
-// 启动动画
 requestAnimationFrame(moveTicker);
 
-// 实时调速
 speedRange.addEventListener('input', () => {
-  speed = parseFloat(speedRange.value);
-  speedValue.textContent = speed.toFixed(1);
+  const sliderVal = parseInt(speedRange.value);
+  speed = mapSpeed(sliderVal);
+  speedValue.textContent = sliderVal;
 });
 </script>
 
